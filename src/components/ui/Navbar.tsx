@@ -3,23 +3,6 @@ import { Link } from 'react-router-dom';
 import { FileText, RefreshCw } from 'lucide-react';
 
 const Navbar: React.FC = () => {
-  const handleReset = () => {
-    // Get all localStorage keys
-    const keys = Object.keys(localStorage);
-    
-    // Filter keys that belong to piyo.my.id
-    const piyoKeys = keys.filter(key => 
-      key.startsWith('piyo.') || 
-      key === 'userId' || 
-      key === 'userName'
-    );
-    
-    // Remove each piyo.my.id related key
-    piyoKeys.forEach(key => localStorage.removeItem(key));
-    
-    // Reload the page to reset the app state
-    window.location.href = '/register';
-  };
 
   return (
     <nav className="bg-white border-b-4 border-black neobrutalism-shadow">
@@ -34,19 +17,6 @@ const Navbar: React.FC = () => {
           <span className="neobrutalism-text">CV Builder</span>
         </Link>
         
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => {
-              if (window.confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
-                handleReset();
-              }
-            }}
-            className="bg-error hover:bg-error-dark text-white font-bold py-2 px-4 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] flex items-center gap-2 neobrutalism-shadow"
-          >
-            <RefreshCw size={16} />
-            Reset Data
-          </button>
-        </div>
       </div>
     </nav>
   );
