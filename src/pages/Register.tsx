@@ -27,7 +27,7 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-neutral-50 px-4">
       <div className="w-full max-w-md">
         <form onSubmit={handleSubmit} className="bg-white p-8 border-4 border-black rounded-lg neobrutalism-shadow">
-          <h1 className="text-4xl font-black mb-6 neobrutalism-text">Selamat Datang!</h1>
+          <h1 className="text-4xl font-black mb-6 neobrutalism-text">Selamat Datangg!</h1>
           <p className="text-gray-600 mb-8">Masukkan nama Anda untuk memulai membuat CV.</p>
           
           <div className="space-y-4">
