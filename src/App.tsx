@@ -8,6 +8,8 @@ import Register from './pages/Register';
 import Navbar from './components/ui/Navbar';
 import { CVProvider } from './context/CVContext';
 import './styles/index.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [userId, setUserId] = useState(localStorage.getItem('userId'));
@@ -36,6 +38,18 @@ function App() {
         </main>
       </div>
     </Router>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </CVProvider>
   );
 }
