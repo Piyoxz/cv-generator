@@ -152,7 +152,7 @@ const CreateCV: React.FC = () => {
       }}
       className="w-full bg-secondary hover:bg-secondary-dark text-white font-bold py-3 px-6 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] neobrutalism-shadow"
     >
-      Lanjutkan CV Terakhir
+      Lanjutkan CV Terakhir - ID: {localStorage.getItem('last_create_cv_id')}
     </button>
   )}
             </div>
