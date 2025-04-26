@@ -141,19 +141,22 @@ const CreateCV: React.FC = () => {
               </button>
 
               {/* Tombol Lanjutkan CV Terakhir */}
-              <button
-                type="button"
-                onClick={() => {
-                  const lastCvId = localStorage.getItem('last_create_cv_id');
-                  if (lastCvId) {
-                    navigate(`/edit/${lastCvId}`);
-                  }
-                }}
-                className="w-full bg-secondary hover:bg-secondary-dark text-white font-bold py-3 px-6 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] neobrutalism-shadow"
-                disabled={!localStorage.getItem('last_create_cv_id')}
-              >
-                Lanjutkan CV Terakhir
-              </button>
+              {
+  localStorage.getItem('last_create_cv_id') && (
+    <button
+      type="button"
+      onClick={() => {
+        const lastCvId = localStorage.getItem('last_create_cv_id');
+        if (lastCvId) {
+          navigate(`/edit/${lastCvId}`);
+        }
+      }}
+      className="w-full bg-secondary hover:bg-secondary-dark text-white font-bold py-3 px-6 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] neobrutalism-shadow"
+    >
+      Lanjutkan CV Terakhir
+    </button>
+  );
+}
             </div>
           </form>
         </div>
