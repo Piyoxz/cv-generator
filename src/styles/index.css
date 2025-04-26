@@ -294,11 +294,11 @@ body {
 
 /* Quill Editor Styles */
 .quill-editor {
-  height: 220px !important;
+  height: 100% !important; /* Atau gunakan nilai % */
 }
 
 .quill-editor .ql-container {
-  height: 182px !important;
+  height: calc(100% - 40px) !important; /* Mengurangi ruang untuk toolbar */
 }
 
 .quill-editor .ql-toolbar {
