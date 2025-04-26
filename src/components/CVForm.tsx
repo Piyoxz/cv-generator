@@ -220,7 +220,7 @@ const CVForm: React.FC<CVFormProps> = ({
       workExperience: [
         ...formData.workExperience,
         {
-          institution: "",
+          company: "",
           position: "",
           employeeStatus: "",
           startDate: "",
@@ -317,7 +317,7 @@ const CVForm: React.FC<CVFormProps> = ({
         ...formData.awards,
         {
           name: "",
-          issuer: "",
+          presenter: "",
           year: "",
         },
       ],
@@ -784,11 +784,11 @@ const CVForm: React.FC<CVFormProps> = ({
                     </label>
                     <input
                       type="text"
-                      value={experience.institution}
+                      value={experience.company}
                       onChange={(e) =>
                         handleWorkExperienceChange(
                           index,
-                          "institution",
+                          "company",
                           e.target.value
                         )
                       }
@@ -1114,9 +1114,9 @@ const CVForm: React.FC<CVFormProps> = ({
                       </label>
                       <input
                         type="text"
-                        value={award.issuer}
+                        value={award.presenter}
                         onChange={(e) =>
-                          handleAwardChange(index, "issuer", e.target.value)
+                          handleAwardChange(index, "presenter", e.target.value)
                         }
                         className="w-full p-3 border-2 border-black rounded-md neobrutalism-input"
                         placeholder="Nama Pemberi"
