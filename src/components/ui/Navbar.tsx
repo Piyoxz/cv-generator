@@ -69,8 +69,8 @@ const Navbar: React.FC = () => {
             }}
             className="bg-error hover:bg-error-dark text-white font-bold py-2 px-4 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] flex items-center gap-2 neobrutalism-shadow"
           >
-            <RefreshCw size={16} />
-            Reset Data
+            <RefreshCw size={16} className="hidden sm:block" />
+            <span>Reset Data</span>
           </button>
         </div>
       </div>
