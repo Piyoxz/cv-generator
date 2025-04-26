@@ -141,55 +141,54 @@ const CreateCV: React.FC = () => {
               </button>
 
               {/* Tombol Lanjutkan CV Terakhir */}
-              {
-  localStorage.getItem('last_create_cv_id') && (
-    <button
-      type="button"
-      onClick={async () => {
-        const lastCvId = localStorage.getItem('last_create_cv_id');
-        if (lastCvId) {
-          try {
-            // Periksa apakah CV ada di database
-            const response = await axios.get(`/get_cv/${lastCvId}`);
-            if (response.status === 200 && response.data.cv) {
-              navigate(`/edit/${lastCvId}`);
-            } else {
-              toast.error('CV Terakhir Tidak Ditemukan', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-                          localStorage.removeItem('last_create_cv_id');
-            setTimeout(() => {
-              location.reload()
-            }, 3000)
-            }
-          } catch (error) {
+              {localStorage.getItem('last_create_cv_id') && (
+  <button
+    type="button"
+    onClick={async () => {
+      const lastCvId = localStorage.getItem('last_create_cv_id');
+      if (lastCvId) {
+        try {
+          const response = await axios.get(`/get_cv/${lastCvId}`);
+          if (response.status === 200 && response.data.cv) {
+            navigate(`/edit/${lastCvId}`);
+          } else {
+            // CV tidak ditemukan
             toast.error('CV Terakhir Tidak Ditemukan', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-            setTimeout(() => {
-              location.reload()
-            }, 3000)
-            }
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
             localStorage.removeItem('last_create_cv_id');
+            setTimeout(() => {
+              location.reload();
+            }, 3000);
           }
+        } catch (error) {
+          // Error saat request
+          toast.error('CV Terakhir Tidak Ditemukan', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+          localStorage.removeItem('last_create_cv_id');
+          setTimeout(() => {
+            location.reload();
+          }, 3000);
         }
-      }}
-      className="w-full bg-secondary hover:bg-secondary-dark text-white font-bold py-3 px-6 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] neobrutalism-shadow"
-    >
-      Lanjutkan CV Terakhir - ID: {localStorage.getItem('last_create_cv_id')}
-    </button>
-  )
-}
+      }
+    }}
+    className="w-full bg-secondary hover:bg-secondary-dark text-white font-bold py-3 px-6 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] neobrutalism-shadow"
+  >
+    Lanjutkan CV Terakhir - ID: {localStorage.getItem('last_create_cv_id')}
+  </button>
+)}
+
             </div>
           </form>
         </div>
