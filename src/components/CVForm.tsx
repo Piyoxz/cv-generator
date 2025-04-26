@@ -206,6 +206,18 @@ const CVForm: React.FC<CVFormProps> = ({
       ...updatedEducation[index],
       [field]: value,
     };
+    if (field === "currentlyStudying") {
+    updatedEducation[index] = {
+      ...updatedEducation[index],
+      [field]: value,
+      endYear: value ? "Sekarang" : updatedEducation[index].endYear, // Ubah endYear jika "Masih Disini"
+    };
+  } else {
+    updatedEducation[index] = {
+      ...updatedEducation[index],
+      [field]: value,
+    };
+  }
     const newFormData = {
       ...formData,
       educationHistory: updatedEducation,
@@ -256,6 +268,18 @@ const CVForm: React.FC<CVFormProps> = ({
       ...updatedWorkExperience[index],
       [field]: value,
     };
+    if (field === "currentlyWorking") {
+    updatedWorkExperience[index] = {
+      ...updatedWorkExperience[index],
+      [field]: value,
+      endDate: value ? "Sekarang" : updatedWorkExperience[index].endDate,
+    };
+  } else {
+    updatedWorkExperience[index] = {
+      ...updatedWorkExperience[index],
+      [field]: value,
+    };
+  }
     const newFormData = {
       ...formData,
       workExperience: updatedWorkExperience,
