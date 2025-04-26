@@ -5,6 +5,7 @@ import CVForm from '../components/CVForm';
 import { getCV, generateCV } from '../services/api';
 import { ArrowLeft } from 'lucide-react';
 import { toast } from 'react-toastify';
+import debounce from 'lodash/debounce';
 
 const CreateCV: React.FC = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const CreateCV: React.FC = () => {
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const [cvId, setCvId] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
   
   const handleCreateCV = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +38,26 @@ const CreateCV: React.FC = () => {
       console.error('Failed to create CV:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const debouncedSave = useCallback(
+    debounce(async (id: string, data: any) => {
+      setSaving(true);
+      try {
+        await updateCV(id, data);
+      } catch (error) {
+        console.error('Failed to auto-save:', error);
+      } finally {
+        setSaving(false);
+      }
+    }, 3000),
+    []
+  );
+
+  const handleFormChange = (data: any) => {
+    if (id) {
+      debouncedSave(cvId, data);
     }
   };
 
@@ -128,7 +150,7 @@ const CreateCV: React.FC = () => {
       <h1 className="text-4xl font-black mb-2 neobrutalism-text">Buat CV Baru</h1>
       <p className="text-gray-600 mb-8">Isi formulir di bawah untuk membuat CV profesional Anda</p>
       
-      <CVForm cvId={cvId} onSubmit={handleSubmit} />
+      <CVForm cvId={cvId} onSubmit={handleSubmit} onChange={handleFormChange} />
     </div>
   );
 };
