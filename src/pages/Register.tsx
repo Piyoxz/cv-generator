@@ -32,11 +32,15 @@ const Register = ({ onLogin }) => {
         navigate('/');
       }, 2000); // Delay 2 detik untuk memberikan waktu membaca notifikasi
     } catch (error) {
-      console.error('Registration failed:', error);
-
-      // Tampilkan notifikasi error
-      toast.error('Registrasi gagal. Silakan coba lagi.');
-    } finally {
+  console.error('Registration failed:', error);
+  if (error.response) {
+    // Jika error berasal dari respons API
+    toast.error(`Error: ${error.response.data.message}`);
+  } else {
+    // Jika error berasal dari jaringan atau lainnya
+    toast.error('Gagal terhubung ke server. Silakan coba lagi.');
+  }
+} finally {
       setLoading(false);
     }
   };
