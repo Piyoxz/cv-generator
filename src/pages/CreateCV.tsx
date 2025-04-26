@@ -56,7 +56,7 @@ const CreateCV: React.FC = () => {
   );
 
   const handleFormChange = (data: any) => {
-    if (id) {
+    if (cvId) {
       debouncedSave(cvId, data);
     }
   };
