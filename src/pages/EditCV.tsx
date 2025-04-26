@@ -4,6 +4,7 @@ import { useCV } from '../context/CVContext';
 import CVForm from '../components/CVForm';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
 import { getCV, generateCV } from '../services/api';
+import { toast } from 'react-toastify';
 import debounce from 'lodash/debounce';
 
 const EditCV: React.FC = () => {
@@ -54,28 +55,47 @@ const EditCV: React.FC = () => {
   };
 
   const handleSubmit = async (formData: any) => {
-    const isConfirmed = window.confirm("Apakah CV sudah benar? Anda akan diarahkan ke halaman utama.");
-    if (!isConfirmed) return;
-  
-    try {
-      const response = await generateCV({
-        ...formData,
-        fileName: cv.fileName
-      });
-  
-      const downloadUrl = response.path;
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = cv.fileName || 'generated_cv.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-  
-      navigate('/');
-    } catch (error) {
-      console.error('Failed to generate CV:', error);
-    }
-  };
+  const isConfirmed = window.confirm("Apakah CV sudah benar? Anda akan diarahkan ke halaman utama.");
+  if (!isConfirmed) return;
+
+  try {
+    const response = await generateCV({
+      ...formData,
+      fileName: title,
+    });
+
+    const downloadUrl = response.path;
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = title || 'generated_cv.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Tampilkan notifikasi sukses
+    toast.success(`File CV "${title || 'generated_cv.pdf'}" berhasil diunduh!`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+
+    // Navigasi ke halaman utama setelah download
+    navigate('/');
+  } catch (error) {
+    console.error('Failed to generate CV:', error);
+    toast.error('Gagal menghasilkan CV. Silakan coba lagi.', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  }
+};
   
   
   
