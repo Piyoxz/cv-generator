@@ -72,13 +72,6 @@ const Navbar: React.FC = () => {
             <RefreshCw size={16} />
             Reset Data
           </button>
-          
-          <Link 
-            to="/create" 
-            className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] flex items-center gap-2 neobrutalism-shadow"
-          >
-            Create New CV
-          </Link>
         </div>
       </div>
     </nav>
