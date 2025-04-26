@@ -61,19 +61,19 @@ const EditCV: React.FC = () => {
   try {
     const response = await generateCV({
       ...formData,
-      fileName: title,
+      fileName: cv.fileName
     });
 
     const downloadUrl = response.path;
     const link = document.createElement('a');
     link.href = downloadUrl;
-    link.download = title || 'generated_cv.pdf';
+    link.download = cv.fileName || 'generated_cv.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
     // Tampilkan notifikasi sukses
-    toast.success(`File CV "${title || 'generated_cv.pdf'}" berhasil diunduh!`, {
+    toast.success(`File CV "${cv.fileName || 'generated_cv.pdf'}" berhasil diunduh!`, {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
