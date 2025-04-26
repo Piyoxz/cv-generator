@@ -4,6 +4,7 @@ import { useCV } from '../context/CVContext';
 import CVForm from '../components/CVForm';
 import { getCV, generateCV } from '../services/api';
 import { ArrowLeft } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const CreateCV: React.FC = () => {
   const navigate = useNavigate();
@@ -39,28 +40,45 @@ const CreateCV: React.FC = () => {
   };
 
   const handleSubmit = async (formData: any) => {
-    const isConfirmed = window.confirm("Apakah CV sudah benar? Anda akan diarahkan ke halaman utama.");
-    if (!isConfirmed) return;
-  
-    try {
-      const response = await generateCV({
-        ...formData,
-        fileName: title
-      });
-  
-      const downloadUrl = response.path;
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = title|| 'generated_cv.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-  
-      navigate('/');
-    } catch (error) {
-      console.error('Failed to generate CV:', error);
-    }
-  };
+  const isConfirmed = window.confirm("Apakah CV sudah benar? Anda akan diarahkan ke halaman utama.");
+  if (!isConfirmed) return;
+
+  try {
+    const response = await generateCV({
+      ...formData,
+      fileName: title,
+    });
+
+    const downloadUrl = response.path;
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = title || 'generated_cv.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast.success(`File CV "${title || 'generated_cv.pdf'}" berhasil diunduh!`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+
+    navigate('/');
+  } catch (error) {
+    console.error('Failed to generate CV:', error);
+    toast.error('Gagal menghasilkan CV. Silakan coba lagi.', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  }
+};
   
   if (step === 'title') {
     return (
