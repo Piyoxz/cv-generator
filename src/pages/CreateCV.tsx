@@ -15,21 +15,26 @@ const CreateCV: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [cvId, setCvId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  
+
   const handleCreateCV = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
       const userId = localStorage.getItem('userId');
       if (!userId) {
         navigate('/register');
         return;
       }
-      
+
       const response = await addCV(userId, title);
       if (response && response.cv) {
-        setCvId(response.cv.id);
+        const newCvId = response.cv.id;
+
+        // Simpan ID CV ke localStorage sebagai last_create_cv_id
+        localStorage.setItem('last_create_cv_id', newCvId);
+
+        setCvId(newCvId);
         setStep('form');
       } else {
         throw new Error('Invalid response from server');
@@ -62,46 +67,49 @@ const CreateCV: React.FC = () => {
   };
 
   const handleSubmit = async (formData: any) => {
-  const isConfirmed = window.confirm("Apakah CV sudah benar? Anda akan diarahkan ke halaman utama.");
-  if (!isConfirmed) return;
+    const isConfirmed = window.confirm("Apakah CV sudah benar? Anda akan diarahkan ke halaman utama.");
+    if (!isConfirmed) return;
 
-  try {
-    const response = await generateCV({
-      ...formData,
-      fileName: title,
-    });
+    try {
+      const response = await generateCV({
+        ...formData,
+        fileName: title,
+      });
 
-    const downloadUrl = response.path;
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.download = title || 'generated_cv.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      const downloadUrl = response.path;
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = title || 'generated_cv.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-    toast.success(`File CV "${title || 'generated_cv.pdf'}" berhasil diunduh!`, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
+      toast.success(`File CV "${title || 'generated_cv.pdf'}" berhasil diunduh!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
 
-    navigate('/');
-  } catch (error) {
-    console.error('Failed to generate CV:', error);
-    toast.error('Gagal menghasilkan CV. Silakan coba lagi.', {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  }
-};
-  
+      // Hapus last_create_cv_id dari localStorage setelah CV selesai dibuat
+      localStorage.removeItem('last_create_cv_id');
+
+      navigate('/');
+    } catch (error) {
+      console.error('Failed to generate CV:', error);
+      toast.error('Gagal menghasilkan CV. Silakan coba lagi.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  };
+
   if (step === 'title') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-neutral-50 px-4">
@@ -109,7 +117,7 @@ const CreateCV: React.FC = () => {
           <form onSubmit={handleCreateCV} className="bg-white p-8 border-4 border-black rounded-lg neobrutalism-shadow">
             <h1 className="text-4xl font-black mb-6 neobrutalism-text">Buat CV Baru</h1>
             <p className="text-gray-600 mb-8">Berikan judul untuk CV Anda.</p>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block font-bold mb-2">Judul CV</label>
@@ -122,7 +130,8 @@ const CreateCV: React.FC = () => {
                   required
                 />
               </div>
-              
+
+              {/* Tombol Lanjutkan */}
               <button
                 type="submit"
                 disabled={loading}
@@ -130,26 +139,41 @@ const CreateCV: React.FC = () => {
               >
                 {loading ? 'Memproses...' : 'Lanjutkan'}
               </button>
+
+              {/* Tombol Lanjutkan CV Terakhir */}
+              <button
+                type="button"
+                onClick={() => {
+                  const lastCvId = localStorage.getItem('last_create_cv_id');
+                  if (lastCvId) {
+                    navigate(`/edit/${lastCvId}`);
+                  }
+                }}
+                className="w-full bg-secondary hover:bg-secondary-dark text-white font-bold py-3 px-6 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] neobrutalism-shadow"
+                disabled={!localStorage.getItem('last_create_cv_id')}
+              >
+                Lanjutkan CV Terakhir
+              </button>
             </div>
           </form>
         </div>
       </div>
     );
   }
-  
+
   return (
     <div>
-      <button 
+      <button
         onClick={() => navigate('/')}
         className="flex items-center gap-2 mb-6 font-bold hover:underline"
       >
         <ArrowLeft size={16} />
         Kembali
       </button>
-      
+
       <h1 className="text-4xl font-black mb-2 neobrutalism-text">Buat CV Baru</h1>
       <p className="text-gray-600 mb-8">Isi formulir di bawah untuk membuat CV profesional Anda</p>
-      
+
       <CVForm cvId={cvId} onSubmit={handleSubmit} onChange={handleFormChange} />
     </div>
   );
