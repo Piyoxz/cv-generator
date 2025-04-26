@@ -141,20 +141,33 @@ const CreateCV: React.FC = () => {
               </button>
 
               {/* Tombol Lanjutkan CV Terakhir */}
-              {localStorage.getItem('last_create_cv_id') && (
+              {
+  localStorage.getItem('last_create_cv_id') && (
     <button
       type="button"
-      onClick={() => {
+      onClick={async () => {
         const lastCvId = localStorage.getItem('last_create_cv_id');
         if (lastCvId) {
-          navigate(`/edit/${lastCvId}`);
+          try {
+            // Periksa apakah CV ada di database
+            const response = await axios.get(`/get_cv/${lastCvId}`);
+            if (response.status === 200 && response.data.cv) {
+              navigate(`/edit/${lastCvId}`);
+            } else {
+              throw new Error('CV not found');
+            }
+          } catch (error) {
+            console.warn('CV terakhir tidak ditemukan di database. Menghapus dari localStorage.');
+            localStorage.removeItem('last_create_cv_id');
+          }
         }
       }}
       className="w-full bg-secondary hover:bg-secondary-dark text-white font-bold py-3 px-6 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] neobrutalism-shadow"
     >
       Lanjutkan CV Terakhir - ID: {localStorage.getItem('last_create_cv_id')}
     </button>
-  )}
+  )
+}
             </div>
           </form>
         </div>
