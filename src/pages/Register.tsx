@@ -15,7 +15,7 @@ const Register = () => {
       const response = await registerUser(name);
       localStorage.setItem('userId', response.user.id);
       localStorage.setItem('userName', response.user.name);
-      navigate('/');
+      window.location.href = '/';
     } catch (error) {
       console.error('Registration failed:', error);
     } finally {
