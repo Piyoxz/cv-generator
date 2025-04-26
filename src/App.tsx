@@ -10,24 +10,32 @@ import { CVProvider } from './context/CVContext';
 import './styles/index.css';
 
 function App() {
-  const userId = localStorage.getItem('userId');
+  const [userId, setUserId] = useState(localStorage.getItem('userId'));
+
+  const handleLogin = (id) => {
+    localStorage.setItem('userId', id);
+    setUserId(id);
+  };
 
   return (
     <CVProvider>
       <Router>
-        <div className="min-h-screen bg-neutral-50">
-          {userId && <Navbar />}
-          <main className="container mx-auto px-4 py-8">
-            <Routes>
-              <Route path="/register" element={!userId ? <Register /> : <Navigate to="/" />} />
-              <Route path="/" element={userId ? <Home /> : <Navigate to="/register"  />} />
-              <Route path="/create" element={userId ? <CreateCV /> : <Navigate to="/register"  />} />
-              <Route path="/edit/:id" element={userId ? <EditCV /> : <Navigate to="/register"  />} />
-              <Route path="/view/:id" element={userId ? <ViewCV /> : <Navigate to="/register"  />} />
-            </Routes>
-          </main>
-        </div>
-      </Router>
+      <div className="min-h-screen bg-neutral-50">
+        {userId && <Navbar />}
+        <main className="container mx-auto px-4 py-8">
+          <Routes>
+            <Route
+              path="/register"
+              element={!userId ? <Register onLogin={handleLogin} /> : <Navigate to="/" />}
+            />
+            <Route path="/" element={userId ? <Home /> : <Navigate to="/register" />} />
+            <Route path="/create" element={userId ? <CreateCV /> : <Navigate to="/register" />} />
+            <Route path="/edit/:id" element={userId ? <EditCV /> : <Navigate to="/register" />} />
+            <Route path="/view/:id" element={userId ? <ViewCV /> : <Navigate to="/register" />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
     </CVProvider>
   );
 }
