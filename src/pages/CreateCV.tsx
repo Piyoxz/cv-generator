@@ -154,7 +154,17 @@ const CreateCV: React.FC = () => {
             if (response.status === 200 && response.data.cv) {
               navigate(`/edit/${lastCvId}`);
             } else {
-              throw new Error('CV not found');
+              toast.error('CV Terakhir Tidak Ditemukan', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+            setTimeout(() => {
+              location.reload()
+            }, 3000)
             }
           } catch (error) {
             console.warn('CV terakhir tidak ditemukan di database. Menghapus dari localStorage.');
