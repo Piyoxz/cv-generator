@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/api';
+import { toast } from 'react-toastify';
 
 const Register = ({ onLogin }) => {
   const [name, setName] = useState('');
@@ -10,16 +11,31 @@ const Register = ({ onLogin }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
+      // Panggil API untuk registrasi
       const response = await registerUser(name);
       const userId = response.user.id;
-      localStorage.setItem('userId', response.user.id);
+
+      // Simpan data user ke localStorage
+      localStorage.setItem('userId', userId);
       localStorage.setItem('userName', response.user.name);
+
+      // Update state global melalui onLogin
       onLogin(userId);
-      window.location.href = '/';
+
+      // Tampilkan notifikasi sukses
+      toast.success(`Selamat datang, ${response.user.name}! Anda akan dialihkan ke halaman utama.`);
+
+      // Redirect ke halaman utama setelah delay singkat
+      setTimeout(() => {
+        navigate('/');
+      }, 2000); // Delay 2 detik untuk memberikan waktu membaca notifikasi
     } catch (error) {
       console.error('Registration failed:', error);
+
+      // Tampilkan notifikasi error
+      toast.error('Registrasi gagal. Silakan coba lagi.');
     } finally {
       setLoading(false);
     }
@@ -31,7 +47,7 @@ const Register = ({ onLogin }) => {
         <form onSubmit={handleSubmit} className="bg-white p-8 border-4 border-black rounded-lg neobrutalism-shadow">
           <h1 className="text-4xl font-black mb-6 neobrutalism-text">Selamat Datang!</h1>
           <p className="text-gray-600 mb-8">Masukkan nama Anda untuk memulai membuat CV.</p>
-          
+
           <div className="space-y-4">
             <div>
               <label className="block font-bold mb-2">Nama Lengkap</label>
@@ -44,7 +60,7 @@ const Register = ({ onLogin }) => {
                 required
               />
             </div>
-            
+
             <button
               type="submit"
               disabled={loading}
