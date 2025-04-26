@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://147.139.162.225';
+const API_URL = 'https://piyo.my.id';
 
 export const registerUser = async (name: string) => {
   const id = Math.random().toString(36).substr(2, 9);
