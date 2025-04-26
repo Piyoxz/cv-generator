@@ -44,7 +44,7 @@ const EditCV: React.FC = () => {
       } finally {
         setSaving(false);
       }
-    }, 5000),
+    }, 3000),
     []
   );
 
