@@ -13,6 +13,7 @@ const Register = ({ onLogin }) => {
     
     try {
       const response = await registerUser(name);
+      const userId = response.user.id;
       localStorage.setItem('userId', response.user.id);
       localStorage.setItem('userName', response.user.name);
       onLogin(userId);
