@@ -23,7 +23,7 @@ function App() {
     <CVProvider>
       <Router>
       <div className="min-h-screen bg-neutral-50">
-        {userId && <Navbar />}
+        <Navbar />
         <main className="container mx-auto px-4 py-8">
           <Routes>
             <Route
