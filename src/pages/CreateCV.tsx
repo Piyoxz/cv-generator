@@ -141,8 +141,7 @@ const CreateCV: React.FC = () => {
               </button>
 
               {/* Tombol Lanjutkan CV Terakhir */}
-              {
-  localStorage.getItem('last_create_cv_id') && (
+              {localStorage.getItem('last_create_cv_id') && (
     <button
       type="button"
       onClick={() => {
@@ -155,8 +154,7 @@ const CreateCV: React.FC = () => {
     >
       Lanjutkan CV Terakhir
     </button>
-  );
-}
+  )}
             </div>
           </form>
         </div>
