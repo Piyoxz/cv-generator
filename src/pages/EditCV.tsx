@@ -58,6 +58,11 @@ const EditCV: React.FC = () => {
   const isConfirmed = window.confirm("Apakah CV sudah benar? Anda akan diarahkan ke halaman utama.");
   if (!isConfirmed) return;
 
+  setSaving(true);
+  if (id) {
+        await updateCV(id, formData); // Pastikan data CV terbaru tersimpan di server
+  }
+
   try {
     const response = await generateCV({
       ...formData,
@@ -94,7 +99,9 @@ const EditCV: React.FC = () => {
       pauseOnHover: true,
       draggable: true,
     });
-  }
+  } finally {
+      setSaving(false);
+    }
 };
   
   
