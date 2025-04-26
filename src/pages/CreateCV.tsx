@@ -9,7 +9,7 @@ import debounce from 'lodash/debounce';
 
 const CreateCV: React.FC = () => {
   const navigate = useNavigate();
-  const { addCV } = useCV();
+  const { addCV, updateCV } = useCV();
   const [step, setStep] = useState<'title' | 'form'>('title');
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
