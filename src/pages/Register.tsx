@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/api';
 
-const Register = () => {
+const Register = ({ onLogin }) => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -15,6 +15,7 @@ const Register = () => {
       const response = await registerUser(name);
       localStorage.setItem('userId', response.user.id);
       localStorage.setItem('userName', response.user.name);
+      onLogin(userId);
       window.location.href = '/';
     } catch (error) {
       console.error('Registration failed:', error);
