@@ -1,8 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FileText } from 'lucide-react';
+import { FileText, RefreshCw } from 'lucide-react';
 
 const Navbar: React.FC = () => {
+  const handleReset = () => {
+    // Get all localStorage keys
+    const keys = Object.keys(localStorage);
+    
+    // Filter keys that belong to piyo.my.id
+    const piyoKeys = keys.filter(key => 
+      key.startsWith('piyo.') || 
+      key === 'userId' || 
+      key === 'userName'
+    );
+    
+    // Remove each piyo.my.id related key
+    piyoKeys.forEach(key => localStorage.removeItem(key));
+    
+    // Reload the page to reset the app state
+    window.location.href = '/register';
+  };
+
   return (
     <nav className="bg-white border-b-4 border-black neobrutalism-shadow">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -15,7 +33,27 @@ const Navbar: React.FC = () => {
           </div>
           <span className="neobrutalism-text">CV Builder</span>
         </Link>
-      
+        
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => {
+              if (window.confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
+                handleReset();
+              }
+            }}
+            className="bg-error hover:bg-error-dark text-white font-bold py-2 px-4 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] flex items-center gap-2 neobrutalism-shadow"
+          >
+            <RefreshCw size={16} />
+            Reset Data
+          </button>
+          
+          <Link 
+            to="/create" 
+            className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-md transform transition-transform hover:translate-y-[-2px] hover:translate-x-[2px] flex items-center gap-2 neobrutalism-shadow"
+          >
+            Create New CV
+          </Link>
+        </div>
       </div>
     </nav>
   );
