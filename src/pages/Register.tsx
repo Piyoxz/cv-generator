@@ -38,7 +38,7 @@ const Register = ({ onLogin }) => {
     toast.error(`Error: ${error.response.data.message}`);
   } else {
     // Jika error berasal dari jaringan atau lainnya
-    toast.error('Gagal terhubung ke server. Silakan coba lagi.');
+     toast.error(`Error: ${error.response.data.message}`);
   }
 } finally {
       setLoading(false);
