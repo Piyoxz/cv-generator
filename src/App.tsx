@@ -19,11 +19,11 @@ function App() {
           {userId && <Navbar />}
           <main className="container mx-auto px-4 py-8">
             <Routes>
-              <Route path="/" element={userId ? <Home /> : <Navigate to="/register" />} />
-              <Route path="/register" element={!userId ? <Register /> :  <Home />} />
-              <Route path="/create" element={userId ? <CreateCV /> : <Navigate to="/register" />} />
-              <Route path="/edit/:id" element={userId ? <EditCV /> : <Navigate to="/register" />} />
-              <Route path="/view/:id" element={userId ? <ViewCV /> : <Navigate to="/register" />} />
+              <Route path="/" element={userId ? <Home /> : <Navigate to="/register" replace />} />
+              <Route path="/register" element={!userId ? <Register /> : <Navigate to="/" replace />} />
+              <Route path="/create" element={userId ? <CreateCV /> : <Navigate to="/register" replace />} />
+              <Route path="/edit/:id" element={userId ? <EditCV /> : <Navigate to="/register" replace />} />
+              <Route path="/view/:id" element={userId ? <ViewCV /> : <Navigate to="/register" replace />} />
             </Routes>
           </main>
         </div>
