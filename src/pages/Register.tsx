@@ -33,13 +33,23 @@ const Register = ({ onLogin }) => {
       }, 2000); // Delay 2 detik untuk memberikan waktu membaca notifikasi
     } catch (error) {
   console.error('Registration failed:', error);
+
+  // Tampilkan pesan error umum
+  let errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+
   if (error.response) {
     // Jika error berasal dari respons API
-    toast.error(`Error: ${error.response.data.message}`);
+    errorMessage = error.response.data?.message || 'Error dari server.';
+  } else if (error.request) {
+    // Jika tidak ada respons dari server (misalnya, timeout atau jaringan mati)
+    errorMessage = 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.';
   } else {
-    // Jika error berasal dari jaringan atau lainnya
-     toast.error(`Error: ${error.response.data.message}`);
+    // Jika error adalah exception JavaScript biasa
+    errorMessage = error.message || 'Terjadi kesalahan tidak diketahui.';
   }
+
+  // Tampilkan notifikasi error
+  toast.error(errorMessage);
 } finally {
       setLoading(false);
     }
